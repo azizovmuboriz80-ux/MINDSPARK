@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11111b">
+  <meta name="description" content="MINDSPARK — a daily space for creativity, ideas and inspiration.">
+  <title>MINDSPARK</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #11111b;
+      color: #f7f4ff;
+      font-family: system-ui, Arial, sans-serif;
+    }
+    header {
+      padding: 25px 20px;
+      border-bottom: 1px solid #302b45;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 25px; font-weight: 850; letter-spacing: 1px; }
+    .logo span { color: #a78bfa; }
+    button, select, textarea { font: inherit; }
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: #8b5cf6;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .lang { background: #28243b; }
+    main { max-width: 650px; margin: auto; padding: 25px 18px 50px; }
+    .tag {
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    h1 { font-size: 35px; line-height: 1.15; margin: 14px 0; }
+    .sub { color: #b8b3ca; line-height: 1.7; }
+    .card {
+      background: #1c1a2b;
+      border: 1px solid #38314e;
+      border-radius: 22px;
+      padding: 22px;
+      margin-top: 25px;
+    }
+    .card h2 { margin-top: 10px; font-size: 23px; }
+    textarea {
+      width: 100%;
+      min-height: 135px;
+      margin: 12px 0;
+      border-radius: 14px;
+      border: 1px solid #49405f;
+      background: #12111e;
+      color: white;
+      padding: 14px;
+      resize: vertical;
+    }
+    textarea:focus { outline: 2px solid #a78bfa; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .secondary { background: #302a45; }
+    .idea {
+      background: #242037;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 12px 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    footer { text-align: center; color: #817b97; padding: 25px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">MIND<span>SPARK</span></div>
+    <button class="lang" id="langBtn">Тоҷикӣ</button>
+  </header>  <main>
+    <div class="tag" id="eyebrow">YOUR DAILY CREATIVE SPACE</div>
+    <h1 id="title">Small ideas.<br>Big possibilities.</h1>
+    <p class="sub" id="intro">Take a moment, think differently, and turn your imagination into ideas.</p><section class="card">
+  <div class="tag" id="daily">TODAY'S CHALLENGE</div>
+  <h2 id="question">If you could solve one problem in the world, what would it be?</h2>
+  <p class="sub" id="hint">There are no wrong answers. Be curious and creative.</p>
+  <textarea id="answer" placeholder="Write your idea here..."></textarea>
+  <div class="actions">
+    <button id="save">Save my idea</button>
+    <button class="secondary" id="next">Another challenge ↗</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2 id="savedTitle">My ideas</h2>
+  <p class="sub" id="savedHint">Your saved ideas stay on this device.</p>
+  <div id="ideas"></div>
+  <button class="secondary" id="clear">Clear all ideas</button>
+</section>
+
+  </main>  <footer> MINDSPARK · Think freely. Create boldly.</footer>  <script>
+    const challenges = [
+      ["If you could solve one problem in the world, what would it be?",
+       "Агар як мушкили ҷаҳонро ҳал карда метавонистӣ, кадомашро интихоб мекардӣ?"],
+      ["Invent something that would make students' lives easier.",
+       "Чизеро ихтироъ кун, ки зиндагии хонандагонро осонтар кунад."],
+      ["What would your dream app help people do?",
+       "Барномаи орзуҳоят ба одамон дар чӣ кӯмак мекард?"],
+      ["Imagine a city of the future. What makes it special?",
+       "Шаҳри ояндаро тасаввур кун. Он чӣ хусусияти махсус дорад?"],
+      ["How could you help your community with one new idea?",
+       "Бо як идеяи нав ба маҳалли зистат чӣ гуна кӯмак мекардӣ?"]
+    ];
+
+    const text = {
+      en: {
+        lang:"Тоҷикӣ", eyebrow:"YOUR DAILY CREATIVE SPACE",
+        title:"Small ideas.<br>Big possibilities.",
+        intro:"Take a moment, think differently, and turn your imagination into ideas.",
+        daily:"TODAY'S CHALLENGE", hint:"There are no wrong answers. Be curious and creative.",
+        placeholder:"Write your idea here...", save:"Save my idea",
+        next:"Another challenge ↗", savedTitle:"My ideas",
+        savedHint:"Your saved ideas stay on this device.",
+        clear:"Clear all ideas", empty:"No ideas saved yet.",
+        saved:"Idea saved!", confirm:"Delete all saved ideas?"
+      },
+      tg: {
+        lang:"English", eyebrow:"ҶОИ ЭҶОДИ ИДЕЯҲОИ ТУ",
+        title:"Идеяҳои хурд.<br>Имкониятҳои бузург.",
+        intro:"Каме фикр кун, аз дигар тараф нигар ва хаёлотатро ба идея табдил деҳ.",
+        daily:"СУПОРИШИ ИМРӮЗА", hint:"Ҷавоби нодуруст вуҷуд надорад. Эҷодкор бош!",
+        placeholder:"Идеяи худро навис...", save:"Идеяро нигоҳ дор",
+        next:"Супориши дигар ↗", savedTitle:"Идеяҳои ман",
+        savedHint:"Идеяҳои нигоҳдоштаат дар ҳамин дастгоҳ мемонанд.",
+        clear:"Ҳамаашро пок кун", empty:"Ҳоло ягон идея нигоҳ дошта нашудааст.",
+        saved:"Идея нигоҳ дошта шуд!", confirm:"Ҳамаи идеяҳои нигоҳдоштаро пок мекунӣ?"
+      }
+    };
+
+    let language = "en";
+    let challengeIndex = Math.floor(Date.now() / 86400000) % challenges.length;
+    const $ = id => document.getElementById(id);
+
+    function renderLanguage() {
+      const t = text[language];
+      $("langBtn").textContent = t.lang;
+      $("eyebrow").textContent = t.eyebrow;
+      $("title").innerHTML = t.title;
+      $("intro").textContent = t.intro;
+      $("daily").textContent = t.daily;
+      $("hint").textContent = t.hint;
+      $("answer").placeholder = t.placeholder;
+      $("save").textContent = t.save;
+      $("next").textContent = t.next;
+      $("savedTitle").textContent = t.savedTitle;
+      $("savedHint").textContent = t.savedHint;
+      $("clear").textContent = t.clear;
+      renderChallenge();
+      renderIdeas();
+    }
+
+    function renderChallenge() {
+      $("question").textContent = challenges[challengeIndex][language === "en" ? 0 : 1];
+    }
+
+    function getIdeas() {
+      try { return JSON.parse(localStorage.getItem("mindspark_ideas") || "[]"); }
+      catch { return []; }
+    }
+
+    function renderIdeas() {
+      const list = $("ideas");
+      list.replaceChildren();
+      const ideas = getIdeas();
+      if (!ideas.length) {
+        const p = document.createElement("p");
+        p.className = "sub";
+        p.textContent = text[language].empty;
+        list.appendChild(p);
+        return;
+      }
+      ideas.slice().reverse().forEach(idea => {
+        const item = document.createElement("div");
+        item.className = "idea";
+        item.textContent = idea;
+        list.appendChild(item);
+      });
+    }
+
+    $("langBtn").addEventListener("click", () => {
+      language = language === "en" ? "tg" : "en";
+      renderLanguage();
+    });
+
+    $("next").addEventListener("click", () => {
+      challengeIndex = (challengeIndex + 1) % challenges.length;
+      renderChallenge();
+    });
+
+    $("save").addEventListener("click", () => {
+      const answer = $("answer").value.trim();
+      if (!answer) {
+        $("answer").focus();
+        return;
+      }
+      const ideas = getIdeas();
+      ideas.push(answer);
+      try {
+        localStorage.setItem("mindspark_ideas", JSON.stringify(ideas));
+        $("answer").value = "";
+        renderIdeas();
+        alert(text[language].saved);
+      } catch {
+        alert("Could not save. Check available device storage.");
+      }
+    });
+
+    $("clear").addEventListener("click", () => {
+      if (confirm(text[language].confirm)) {
+        localStorage.removeItem("mindspark_ideas");
+        renderIdeas();
+      }
+    });
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
+    }
+
+    renderLanguage();
+  </script></body>
+</html>
