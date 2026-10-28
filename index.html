@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en">
+д<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -225,11 +225,7 @@
       }
     });
 
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
-      });
-    }
+    
 
     renderLanguage();
   </script></body>
