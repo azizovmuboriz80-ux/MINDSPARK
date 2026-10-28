@@ -1,0 +1,13 @@
+{
+"id": "./",
+"name": "MINDSPARK",
+"short_name": "MINDSPARK",
+"description": "A creative space for ideas and inspiration.",
+"lang": "en",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"orientation": "portrait",
+"background_color": "#11111b",
+"theme_color": "#11111b"
+}
